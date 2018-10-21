@@ -14,6 +14,7 @@
 using namespace std;
 int main(int argc, char **argv){
   Vaus v;
+  int lvl=0;
 const float FPS=60;
   bool done=false, draw = true;
   if (!al_init())
@@ -158,6 +159,7 @@ const float FPS=60;
   GestoreGioco ark;
   al_start_timer(timer);
 while(!done){
+  cout<<lvl<<endl<<endl;
   ALLEGRO_EVENT events;
   al_wait_for_event(event_queue, &events);
 
@@ -179,24 +181,35 @@ while(!done){
     if(al_key_down(&keyState, ALLEGRO_KEY_LEFT) && v.getX()>0)
       v.setX(v.getX()-5);
       // cout<<v.getX();
-      ark.collisionControl(v,1);
+      ark.collisionControl(v,lvl);
       ark.b.movements();
   }
-  ark.draw(1);
+  ark.draw(lvl);
   al_draw_bitmap(paddle,v.getX(),v.getY(),0);
   al_draw_bitmap(ark.ball,ark.b.getX(),ark.b.getY(),0);
   al_flip_display();
 
  if(ark.b.getY()>=600){
    cout<<"morto"<<endl;
-   // if(v.getLives()==0){
-   // }
+   if(v.getLives()==0){
+
+   }
    v.setLives(v.getLives()-1);
    ark.b.ballReset();
-   ark.b.setDy(-ark.b.getDy());
    v.vausReset();
-
  }
+if(ark.getLivesSum()==0){
+// al_get_keyboard_state(&keyState);
+// if(al_key_down(&keyState, ALLEGRO_KEY_M)){
+  cout<<"livelloCompletato!"<<endl;
+  al_clear_to_color(al_map_rgb(0,0,0));
+  lvl++;
+  ark.b.ballReset();
+  v.vausReset();
+  ark.setLivesSum(1);
+
+}
+
 
 }
 

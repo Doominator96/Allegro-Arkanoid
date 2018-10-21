@@ -26,7 +26,9 @@ class GestoreGioco
 		 ALLEGRO_BITMAP* ball;
 		 Ball b;
 		 void collisionControl(Vaus v, int lvl);
-  private:
+		 int getLivesSum() const {return livesSum;}
+		 void setLivesSum(int _livesSum){livesSum=_livesSum;}
+	private:
 		int numLivelli;
     vector<Block**> livelli;
 		vector<ALLEGRO_BITMAP*> blocks;
@@ -35,6 +37,7 @@ class GestoreGioco
 		ALLEGRO_BITMAP* bg;
 		int dx;
 		int dy;
+		int livesSum;
 };
 
 

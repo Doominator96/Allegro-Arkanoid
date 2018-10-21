@@ -28,7 +28,7 @@ Block** Livello::creaLivello(int M[8][12]){
           livello[i][j]=b;
           }
         else if(M[i][j]==5){
-          Block b(5,-1);
+          Block b(5,0);
           livello[i][j]=b;
        }
       }

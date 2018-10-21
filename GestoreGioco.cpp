@@ -22,6 +22,15 @@ GestoreGioco::GestoreGioco()
   paddle=al_load_bitmap("paddle.png");
   ball=al_load_bitmap("ball.png");
 
+  int liv0[8][12]={
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,2,0,0,0,0,0,0,0,0,2,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0}};
   int liv1[8][12]={
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
@@ -46,6 +55,7 @@ GestoreGioco::GestoreGioco()
       // it = livelli.begin();
       livelli.push_back(l.creaLivello(liv2));
       livelli.push_back(l.creaLivello(liv1));
+      livelli.push_back(l.creaLivello(liv0));
     }
 
 
@@ -71,14 +81,16 @@ GestoreGioco::GestoreGioco()
         if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()>= v.getX() && b.getX() <= v.getX()+104)
           b.setDy(-b.getDy());
 
+          livesSum=0;
 
        for(int i=0;i<8;i++){
          for(int j=0;j<12;j++){
-           if((livelli.at(lvl))[i][j].getLives()!=0)
+           if((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5)
            if(b.getX()>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32){
               b.setDy(-b.getDy());
               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
             }
+            livesSum+=(livelli.at(lvl))[i][j].getLives();
           }
        }
     }
