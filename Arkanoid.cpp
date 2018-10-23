@@ -12,9 +12,24 @@
 #include "GestoreGioco.h"
 
 using namespace std;
+
+// void gameOver(){
+//   al_draw_bitmap(gameOver,0,0,0);
+//   al_flip_display();
+//
+//   al_rest(5);
+//
+//   al_destroy_display(display);
+//   al_destroy_event_queue(event_queue);
+//   al_destroy_sample(sample);
+//   al_destroy_timer(timer);
+//
+// }
+
 int main(int argc, char **argv){
   Vaus v;
   int lvl=0;
+
 const float FPS=60;
   bool done=false, draw = true;
   if (!al_init())
@@ -109,6 +124,7 @@ const float FPS=60;
   ALLEGRO_BITMAP* Sfondo = al_load_bitmap("background.jpg");
   ALLEGRO_BITMAP* Play = al_load_bitmap("Play.png");
   ALLEGRO_BITMAP*   paddle=al_load_bitmap("paddle.png");
+  ALLEGRO_BITMAP* gameOver=al_load_bitmap("gameOver.png");
   ALLEGRO_FONT* text =al_load_font("Arka_solid.ttf",100,0);
   if (!Sfondo)
   {
@@ -159,7 +175,7 @@ const float FPS=60;
   GestoreGioco ark;
   al_start_timer(timer);
 while(!done){
-  cout<<lvl<<endl<<endl;
+  // cout<<lvl<<endl<<endl;
   ALLEGRO_EVENT events;
   al_wait_for_event(event_queue, &events);
 
@@ -183,32 +199,57 @@ while(!done){
       // cout<<v.getX();
       ark.collisionControl(v,lvl);
       ark.b.movements();
-  }
-  ark.draw(lvl);
-  al_draw_bitmap(paddle,v.getX(),v.getY(),0);
-  al_draw_bitmap(ark.ball,ark.b.getX(),ark.b.getY(),0);
-  al_flip_display();
+      ark.draw(lvl);
+      al_draw_bitmap(paddle,v.getX(),v.getY(),0);
+      al_draw_bitmap(ark.ball,ark.b.getX(),ark.b.getY(),0);
+      al_flip_display();
 
- if(ark.b.getY()>=600){
-   cout<<"morto"<<endl;
-   if(v.getLives()==0){
+      if(ark.b.getY()>=600){
+        cout<<"morto"<<endl;
+        if(v.getLives()==1){
+          // gameOver();
+          al_draw_bitmap(gameOver,0,0,0);
+          al_flip_display();
 
-   }
-   v.setLives(v.getLives()-1);
-   ark.b.ballReset();
-   v.vausReset();
- }
-if(ark.getLivesSum()==0){
-// al_get_keyboard_state(&keyState);
-// if(al_key_down(&keyState, ALLEGRO_KEY_M)){
-  cout<<"livelloCompletato!"<<endl;
-  al_clear_to_color(al_map_rgb(0,0,0));
-  lvl++;
-  ark.b.ballReset();
-  v.vausReset();
-  ark.setLivesSum(1);
+          al_rest(5);
 
-}
+          al_destroy_display(display);
+          al_destroy_event_queue(event_queue);
+          al_destroy_sample(sample);
+          al_destroy_timer(timer);
+
+        }
+        v.setLives(v.getLives()-1);
+        ark.b.ballReset();
+        v.vausReset();
+      }
+
+      if(ark.getLivesSum()==0){
+
+        if(lvl==ark.getNumLivelli()){
+          // gameOver();
+          al_draw_bitmap(gameOver,0,0,0);
+          al_flip_display();
+
+          al_rest(5);
+
+          al_destroy_display(display);
+          al_destroy_event_queue(event_queue);
+          al_destroy_sample(sample);
+          al_destroy_timer(timer);
+        }
+
+        ark.setLivesSum(1);
+        // al_get_keyboard_state(&keyState);
+        // if(al_key_down(&keyState, ALLEGRO_KEY_M)){
+        cout<<"livelloCompletato!"<<endl;
+        al_clear_to_color(al_map_rgb(0,0,0));
+        lvl++;
+        ark.b.ballReset();
+        v.vausReset();
+
+      }
+      }
 
 
 }

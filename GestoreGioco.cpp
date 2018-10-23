@@ -6,6 +6,8 @@ GestoreGioco::GestoreGioco()
   dy=1;
   numLivelli=2;
   Livello l;
+  livesSum=0;
+
   if (!al_init())
   cerr << "No Allegro" << endl;
 
@@ -27,7 +29,7 @@ GestoreGioco::GestoreGioco()
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,2,0,0,0,0,0,0,0,0,2,0},
+    {0,0,0,0,0,0,0,0,0,0,2,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0}};
@@ -53,9 +55,31 @@ GestoreGioco::GestoreGioco()
 
       // iterator it;
       // it = livelli.begin();
-      livelli.push_back(l.creaLivello(liv2));
-      livelli.push_back(l.creaLivello(liv1));
-      livelli.push_back(l.creaLivello(liv0));
+      Block** l1=l.creaLivello(liv0);
+      Block** l2=l.creaLivello(liv1);
+      Block** l3=l.creaLivello(liv2);
+      livelli.push_back(l2);
+      livelli.push_back(l3);
+      livelli.push_back(l1);
+
+      for(int i=0;i<8;i++){
+        cout<<endl;
+        for(int j=0;j<12;j++)
+          cout<<l1[i][j].getColor()<<" ";
+        }
+        cout<<endl;
+      for(int i=0;i<8;i++){
+        cout<<endl;
+        for(int j=0;j<12;j++)
+          cout<<l2[i][j].getColor()<<" ";
+        }
+        cout<<endl;
+      for(int i=0;i<8;i++){
+        cout<<endl;
+        for(int j=0;j<12;j++)
+          cout<<l3[i][j].getColor()<<" ";
+        }
+        cout<<endl;
     }
 
 
@@ -64,7 +88,7 @@ GestoreGioco::GestoreGioco()
       al_draw_bitmap(bg,0,0,0);
       for(int i=0;i<8;i++){
         for(int j=0;j<12;j++){
-          if((livelli.at(lvl))[i][j].getColor()!=0 &&(livelli.at(lvl))[i][j].getLives())
+          if((livelli.at(lvl))[i][j].getLives()>0 ||(livelli.at(lvl))[i][j].getColor()==5)
             al_draw_bitmap(blocks.at((livelli.at(lvl))[i][j].getColor()-1),16+(j*64),64+i*32,0);
         }
       }
@@ -81,8 +105,8 @@ GestoreGioco::GestoreGioco()
         if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()>= v.getX() && b.getX() <= v.getX()+104)
           b.setDy(-b.getDy());
 
-          livesSum=0;
 
+          livesSum=0;
        for(int i=0;i<8;i++){
          for(int j=0;j<12;j++){
            if((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5)

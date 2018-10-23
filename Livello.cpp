@@ -1,10 +1,12 @@
 # include "Livello.h"
 Livello::Livello(){
-livello=new Block*[8];
-for(int i=0;i<8;i++)
-  livello[i]=new Block[12];
+
 }
 Block** Livello::creaLivello(int M[8][12]){
+  livello=new Block*[8];
+  for(int i=0;i<8;i++)
+    livello[i]=new Block[12];
+    
   for(int i=0;i<8;i++)
       for(int j=0;j<12;j++){
         if(M[i][j]==0){
