@@ -6,8 +6,8 @@ GestoreGioco::GestoreGioco()
   dy=1;
   numLivelli=2;
   Livello l;
-  livesSum=0;
-
+  // livesSum=0;
+  srand(time(NULL));
   if (!al_init())
   cerr << "No Allegro" << endl;
 
@@ -16,6 +16,8 @@ GestoreGioco::GestoreGioco()
   blocks.push_back(al_load_bitmap("green.png"));
   blocks.push_back(al_load_bitmap("silver.png"));
   blocks.push_back(al_load_bitmap("gold.png"));
+  enemies.push_back(al_load_bitmap("enemy1.png"));
+  enemies.push_back(al_load_bitmap("enemy2.png"));
   bg = al_load_bitmap("back.jpg");
   for (unsigned i = 0; i<blocks.size(); i++)
   if (!blocks[i])
@@ -61,25 +63,9 @@ GestoreGioco::GestoreGioco()
       livelli.push_back(l2);
       livelli.push_back(l3);
       livelli.push_back(l1);
-
-      for(int i=0;i<8;i++){
-        cout<<endl;
-        for(int j=0;j<12;j++)
-          cout<<l1[i][j].getColor()<<" ";
-        }
-        cout<<endl;
-      for(int i=0;i<8;i++){
-        cout<<endl;
-        for(int j=0;j<12;j++)
-          cout<<l2[i][j].getColor()<<" ";
-        }
-        cout<<endl;
-      for(int i=0;i<8;i++){
-        cout<<endl;
-        for(int j=0;j<12;j++)
-          cout<<l3[i][j].getColor()<<" ";
-        }
-        cout<<endl;
+      livesSum[0]=84;
+      livesSum[1]=40;
+      livesSum[2]=1;
     }
 
 
@@ -96,25 +82,74 @@ GestoreGioco::GestoreGioco()
 
 
     void GestoreGioco::collisionControl(Vaus v,int lvl){
-        if(b.getX() <= 0 || b.getX() >=800 - 22)
+      cancellato=false;
+      completato=false;
+        if(b.getX() <= 0 || b.getX() >=800 - 22){
           b.setDx(-b.getDx());
-        if(b.getY() <= 0)
+        }
+        if(b.getY() <= 0){
             b.setDy(-b.getDy());
+          }
 
 
-        if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()>= v.getX() && b.getX() <= v.getX()+104)
-          b.setDy(-b.getDy());
+        if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()>= v.getX() && b.getX() <= v.getX()+104){
+          b.setDx((((b.getX()-v.getX())*(6+3))/(104))+(-3));
+          b.setDy((6-abs(b.getDx())));
+        }
 
 
-          livesSum=0;
        for(int i=0;i<8;i++){
          for(int j=0;j<12;j++){
-           if((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5)
-           if(b.getX()>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32){
-              b.setDy(-b.getDy());
+           if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()>=16+(j*64)&& b.getX()+22 <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+             if((livelli.at(lvl))[i][j].getColor()!=5){
+             (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+             livesSum[lvl]-=1;
+             }
+             b.setDy(-b.getDy());
+             cancellato=true;
+             break;
+           }
+           else if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+            if((livelli.at(lvl))[i][j].getColor()!=5){
               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+              livesSum[lvl]-=1;
             }
-            livesSum+=(livelli.at(lvl))[i][j].getLives();
+              b.setDx(-b.getDx());
+              cancellato=true;
+              break;
+           }
+            // livesSum+=(livelli.at(lvl))[i][j].getLives();
           }
        }
+       if(livesSum[lvl]==0)
+       completato=true;
+
+       cout<<livesSum[lvl]<<endl;
+       // cout<<cancellato<<endl;
+       // for(int i=0;i<8;i++){
+       //   for(int j=0;j<12;j++){
+       //      livesSum+=(livelli.at(lvl))[i][j].getLives();
+       //    }
+       // }
+
+    }
+    void GestoreGioco::enemyMove(Enemy* &en,int lvl){
+        al_draw_bitmap(enemies.at(lvl%2),en->getX(),en->getY(),0);
+        // al_flip_display();
+
+        if(en->getX() <= 0 || en->getX() >=800 - 69){
+          en->setDx(-en->getDx());
+        }
+        if(en->getY() <= 0){
+            en->setDy(-en->getDy());
+          }
+          if(en->getY()+104 >= 500){
+              en->setDy(-en->getDy());
+            }
+
+        if(b.getX()<=en->getX()+69 && b.getX()+22>=en->getX() && b.getY()+22>=en->getY() && b.getY()<=en->getY()+69){
+          b.setDx(rand() % 6);
+          b.setDy(rand() % 6);
+          en->setAlive(false);
+        }
     }

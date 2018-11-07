@@ -7,10 +7,12 @@
 
 #include <vector>
 #include <iostream>
+#include <time.h>
 #include "Block.h"
 #include "Livello.h"
 #include "Vaus.h"
 #include "Ball.h"
+#include "Enemy.h"
 
 using namespace std;
 
@@ -26,18 +28,23 @@ class GestoreGioco
 		 ALLEGRO_BITMAP* ball;
 		 Ball b;
 		 void collisionControl(Vaus v, int lvl);
-		 int getLivesSum() const {return livesSum;}
-		 void setLivesSum(int _livesSum){livesSum=_livesSum;}
+		 // vector<int> getLivesSum() const {return livesSum;}
+		 // void setLivesSum(vector<int> _livesSum){livesSum=_livesSum;}
+		 void enemyMove(Enemy* &en,int lvl);
+		 bool getCompletato() const {return completato;}
 	private:
 		int numLivelli;
     vector<Block**> livelli;
 		vector<ALLEGRO_BITMAP*> blocks;
 		ALLEGRO_BITMAP* paddle;
+		vector<ALLEGRO_BITMAP*> enemies;
 		Vaus v;
 		ALLEGRO_BITMAP* bg;
 		int dx;
 		int dy;
-		int livesSum;
+		int livesSum[4];
+		bool cancellato=false;
+		bool completato=false;
 };
 
 

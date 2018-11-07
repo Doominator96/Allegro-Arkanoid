@@ -29,6 +29,10 @@ using namespace std;
 int main(int argc, char **argv){
   Vaus v;
   int lvl=0;
+  int enemySpawn=0;
+  int enemyCount=0;
+  Enemy* en=new Enemy();
+  vector<Enemy*> enemies;
 
 const float FPS=60;
   bool done=false, draw = true;
@@ -125,6 +129,7 @@ const float FPS=60;
   ALLEGRO_BITMAP* Play = al_load_bitmap("Play.png");
   ALLEGRO_BITMAP*   paddle=al_load_bitmap("paddle.png");
   ALLEGRO_BITMAP* gameOver=al_load_bitmap("gameOver.png");
+  ALLEGRO_BITMAP* heart=al_load_bitmap("heart.png");
   ALLEGRO_FONT* text =al_load_font("Arka_solid.ttf",100,0);
   if (!Sfondo)
   {
@@ -178,7 +183,6 @@ while(!done){
   // cout<<lvl<<endl<<endl;
   ALLEGRO_EVENT events;
   al_wait_for_event(event_queue, &events);
-
   if(events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
   {
     al_destroy_bitmap(Sfondo);
@@ -191,17 +195,32 @@ while(!done){
   }
   if(events.type == ALLEGRO_EVENT_TIMER)
   {
+    enemySpawn++;
     al_get_keyboard_state(&keyState);
     if(al_key_down(&keyState, ALLEGRO_KEY_RIGHT)&&v.getX()+104<798)
-      v.setX(v.getX()+5);
+      v.setX(v.getX()+10);
     if(al_key_down(&keyState, ALLEGRO_KEY_LEFT) && v.getX()>0)
-      v.setX(v.getX()-5);
+      v.setX(v.getX()-10);
       // cout<<v.getX();
       ark.collisionControl(v,lvl);
       ark.b.movements();
       ark.draw(lvl);
       al_draw_bitmap(paddle,v.getX(),v.getY(),0);
       al_draw_bitmap(ark.ball,ark.b.getX(),ark.b.getY(),0);
+      // al_draw_bitmap()
+      for(int i=0;i<v.getLives();i++){
+        al_draw_bitmap(heart,50+(i*35),25,0);
+      }
+      for(int i=0;i<enemies.size();i++){
+      if(enemies[i]->getAlive()){
+        ark.enemyMove(enemies[i],lvl);
+        enemies[i]->movements();
+      }
+    }
+      if(enemySpawn%1800==0){
+        enemies.push_back(new Enemy());
+      }
+
       al_flip_display();
 
       if(ark.b.getY()>=600){
@@ -222,9 +241,10 @@ while(!done){
         v.setLives(v.getLives()-1);
         ark.b.ballReset();
         v.vausReset();
+
       }
 
-      if(ark.getLivesSum()==0){
+      if(ark.getCompletato()){
 
         if(lvl==ark.getNumLivelli()){
           // gameOver();
@@ -239,7 +259,7 @@ while(!done){
           al_destroy_timer(timer);
         }
 
-        ark.setLivesSum(1);
+        // ark.setLivesSum(0);
         // al_get_keyboard_state(&keyState);
         // if(al_key_down(&keyState, ALLEGRO_KEY_M)){
         cout<<"livelloCompletato!"<<endl;
@@ -249,6 +269,7 @@ while(!done){
         v.vausReset();
 
       }
+
       }
 
 
