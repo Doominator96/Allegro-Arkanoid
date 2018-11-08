@@ -1,6 +1,11 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+#include<time.h>
+#include<cstdlib>
+#include<iostream>
+using namespace std;
+
 class Enemy
 {
 public:

@@ -28,10 +28,10 @@ GestoreGioco::GestoreGioco()
 
   int liv0[8][12]={
     {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,2,0},
+    {0,2,0,0,0,0,0,0,0,0,2,0},
+    {0,2,0,0,0,0,0,0,0,0,2,0},
+    {0,2,0,0,0,0,0,0,0,0,2,0},
+    {0,2,0,0,0,0,0,0,0,0,2,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0}};
@@ -65,7 +65,7 @@ GestoreGioco::GestoreGioco()
       livelli.push_back(l1);
       livesSum[0]=84;
       livesSum[1]=40;
-      livesSum[2]=1;
+      livesSum[2]=8;
     }
 
 
@@ -92,7 +92,7 @@ GestoreGioco::GestoreGioco()
           }
 
 
-        if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()>= v.getX() && b.getX() <= v.getX()+104){
+        if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()+22>= v.getX() && b.getX() <= v.getX()+104){
           b.setDx((((b.getX()-v.getX())*(6+3))/(104))+(-3));
           b.setDy((6-abs(b.getDx())));
         }
@@ -100,27 +100,70 @@ GestoreGioco::GestoreGioco()
 
        for(int i=0;i<8;i++){
          for(int j=0;j<12;j++){
-           if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()>=16+(j*64)&& b.getX()+22 <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+           // if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+           //   if((livelli.at(lvl))[i][j].getColor()!=5){
+           //   (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+           //   livesSum[lvl]-=1;
+           //   }
+           //   b.setDy(-b.getDy());
+           //   cancellato=true;
+           //   break;
+           // }
+           // else if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+           //  if((livelli.at(lvl))[i][j].getColor()!=5){
+           //    (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+           //    livesSum[lvl]-=1;
+           //  }
+           //    b.setDx(-b.getDx());
+           //    cancellato=true;
+           //    break;
+           // }
+
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+22>=64+i*32 && b.getY() <=64+(i*32)+32 && b.getX()<=16+(j*64)+64 && b.getX()>=16+(j*64)+64-2  &&!cancellato){
              if((livelli.at(lvl))[i][j].getColor()!=5){
-             (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
-             livesSum[lvl]-=1;
+               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+               livesSum[lvl]-=1;
              }
+             b.setDx(-b.getDx());
+             cancellato=true;
+             break;
+           }
+
+           //LEFT
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+22>=64+i*32 && b.getY() <=64+(i*32)+32 && b.getX()+22>=16+(j*64) && b.getX()+22<=16+(j*64)+2  &&!cancellato){
+             if((livelli.at(lvl))[i][j].getColor()!=5){
+               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+               livesSum[lvl]-=1;
+             }
+             b.setDx(-b.getDx());
+             cancellato=true;
+             break;
+           }
+           //TOP
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22>=64+i*32 && b.getY()+22<=64+i*32+2 &&!cancellato){
+             if((livelli.at(lvl))[i][j].getColor()!=5){
+               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+               livesSum[lvl]-=1;
+               }
+               b.setDy(-b.getDy());
+               cancellato=true;
+               break;
+             }
+             //DOWN
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()<=64+(i*32)+32 && b.getY()+22>=64+i*32-2 &&!cancellato){
+            if((livelli.at(lvl))[i][j].getColor()!=5){
+              (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
+              livesSum[lvl]-=1;
+              }
              b.setDy(-b.getDy());
              cancellato=true;
              break;
            }
-           else if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
-            if((livelli.at(lvl))[i][j].getColor()!=5){
-              (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
-              livesSum[lvl]-=1;
-            }
-              b.setDx(-b.getDx());
-              cancellato=true;
-              break;
-           }
-            // livesSum+=(livelli.at(lvl))[i][j].getLives();
-          }
-       }
+
+           //RIGHT
+
+               }
+             }
        if(livesSum[lvl]==0)
        completato=true;
 
@@ -148,8 +191,8 @@ GestoreGioco::GestoreGioco()
             }
 
         if(b.getX()<=en->getX()+69 && b.getX()+22>=en->getX() && b.getY()+22>=en->getY() && b.getY()<=en->getY()+69){
-          b.setDx(rand() % 6);
-          b.setDy(rand() % 6);
+          b.setDx(rand() % 6+1);
+          b.setDy(rand() % 6+1);
           en->setAlive(false);
         }
     }

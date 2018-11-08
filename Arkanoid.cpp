@@ -31,7 +31,6 @@ int main(int argc, char **argv){
   int lvl=0;
   int enemySpawn=0;
   int enemyCount=0;
-  Enemy* en=new Enemy();
   vector<Enemy*> enemies;
 
 const float FPS=60;

@@ -1,12 +1,14 @@
 #include "Enemy.h"
 
 Enemy::Enemy(){
+
+  srand(time(NULL));
   x_init=0;
   y_init=0;
-  x=0;
+  x=rand()% 500;
   y=0;
-  dX=2;
-  dY=2;
+  dX=rand()% 4+1;
+  dY=rand()%4+1;
   alive=true;
 }
 void Enemy::enemyReset(){
