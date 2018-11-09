@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <time.h>
+#include "Variables.h"
 #include "Block.h"
 #include "Livello.h"
 #include "Vaus.h"
@@ -16,13 +17,14 @@
 
 using namespace std;
 
-class GestoreGioco
+class GestoreGioco: public Variables
 {
 	public:
 		GestoreGioco();
 		~GestoreGioco();
+		GestoreGioco(const GestoreGioco& g);
+		GestoreGioco& operator=(const GestoreGioco& g);
 		void draw(int lvl);
-		const int getNumLivelli(){return numLivelli;}
 		 vector<Block**> getLivelli(){return livelli;}
 		 vector<ALLEGRO_BITMAP*> getBlocks(){return blocks;}
 		 void movimento(Vaus v);
@@ -34,15 +36,12 @@ class GestoreGioco
 		 void enemyMove(Enemy* &en,int lvl);
 		 bool getCompletato() const {return completato;}
 	private:
-		int numLivelli;
     vector<Block**> livelli;
 		vector<ALLEGRO_BITMAP*> blocks;
 		ALLEGRO_BITMAP* paddle;
 		vector<ALLEGRO_BITMAP*> enemies;
 		Vaus v;
 		ALLEGRO_BITMAP* bg;
-		int dx;
-		int dy;
 		int livesSum[4];
 		bool cancellato=false;
 		bool completato=false;

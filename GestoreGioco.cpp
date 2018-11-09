@@ -2,9 +2,6 @@
 
 GestoreGioco::GestoreGioco()
 {
-  dx=1;
-  dy=1;
-  numLivelli=2;
   Livello l;
   // livesSum=0;
   srand(time(NULL));
@@ -75,7 +72,7 @@ GestoreGioco::GestoreGioco()
       for(int i=0;i<8;i++){
         for(int j=0;j<12;j++){
           if((livelli.at(lvl))[i][j].getLives()>0 ||(livelli.at(lvl))[i][j].getColor()==5)
-            al_draw_bitmap(blocks.at((livelli.at(lvl))[i][j].getColor()-1),16+(j*64),64+i*32,0);
+            al_draw_bitmap(blocks.at((livelli.at(lvl))[i][j].getColor()-1),border+(j*blockW),blockW+i*blockH,0);//border 12
         }
       }
     }
@@ -84,7 +81,7 @@ GestoreGioco::GestoreGioco()
     void GestoreGioco::collisionControl(Vaus &v,int lvl){
       cancellato=false;
       completato=false;
-        if(b.getX() <= 0 || b.getX() >=800 - 22){
+        if(b.getX() <= 0 || b.getX() >=screenW - ballDim){
           b.setDx(-b.getDx());
         }
         if(b.getY() <= 0){
@@ -92,15 +89,15 @@ GestoreGioco::GestoreGioco()
           }
 
 
-        if((b.getY() >= 560-22 && b.getY()<=560-18) && b.getX()+22>= v.getX() && b.getX() <= v.getX()+104){
-          b.setDx((((b.getX()-v.getX())*(6+3))/(104))+(-3));
+        if((b.getY() >= 560-ballDim && b.getY()<=560-18) && b.getX()+ballDim>= v.getX() && b.getX() <= v.getX()+paddleW){
+          b.setDx((((b.getX()-v.getX())*(6+3))/(paddleW))+(-3));
           b.setDy((6-abs(b.getDx())));
         }
 
 
-       for(int i=0;i<8;i++){
-         for(int j=0;j<12;j++){
-           // if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+       for(int i=0;i<mHeight;i++){
+         for(int j=0;j<mWidth;j++){
+           // if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=border+(j*blockW)&& b.getX() <=border+(j*blockW)+blockW && b.getY()+22 >= blockW+i*blockH && b.getY() <= blockW+(i*blockH)+blockH && !cancellato){
            //   if((livelli.at(lvl))[i][j].getColor()!=5){
            //   (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
            //   livesSum[lvl]-=1;
@@ -109,7 +106,7 @@ GestoreGioco::GestoreGioco()
            //   cancellato=true;
            //   break;
            // }
-           // else if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22 >= 64+i*32 && b.getY() <= 64+(i*32)+32 && !cancellato){
+           // else if(((livelli.at(lvl))[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=border+(j*blockW)&& b.getX() <=border+(j*blockW)+blockW && b.getY()+22 >= blockW+i*blockH && b.getY() <= blockW+(i*blockH)+blockH && !cancellato){
            //  if((livelli.at(lvl))[i][j].getColor()!=5){
            //    (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
            //    livesSum[lvl]-=1;
@@ -120,11 +117,11 @@ GestoreGioco::GestoreGioco()
            // }
 
            //RIGHT
-           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+22>=64+i*32 && b.getY() <=64+(i*32)+32 && b.getX()<=16+(j*64)+64 && b.getX()>=16+(j*64)+64-2  &&!cancellato){
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+ballDim>=blockW+i*blockH && b.getY() <=blockW+(i*blockH)+blockH && b.getX()<=border+(j*blockW)+blockW && b.getX()>=border+(j*blockW)+blockW-2  &&!cancellato){
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
-               v.setScore(v.getScore()+10);
+               v.setScore(v.getScore()+scoreIncrement);
              }
              b.setDx(-b.getDx());
              cancellato=true;
@@ -132,33 +129,33 @@ GestoreGioco::GestoreGioco()
            }
 
            //LEFT
-           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+22>=64+i*32 && b.getY() <=64+(i*32)+32 && b.getX()+22>=16+(j*64) && b.getX()+22<=16+(j*64)+2  &&!cancellato){
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+ballDim>=blockW+i*blockH && b.getY() <=blockW+(i*blockH)+blockH && b.getX()+ballDim>=border+(j*blockW) && b.getX()+ballDim<=border+(j*blockW)+2  &&!cancellato){
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
-               v.setScore(v.getScore()+10);
+               v.setScore(v.getScore()+scoreIncrement);
              }
              b.setDx(-b.getDx());
              cancellato=true;
              break;
            }
            //TOP
-           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()+22>=64+i*32 && b.getY()+22<=64+i*32+2 &&!cancellato){
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+ballDim>=border+(j*blockW)&& b.getX() <=border+(j*blockW)+blockW && b.getY()+ballDim>=blockW+i*blockH && b.getY()+ballDim<=blockW+i*blockH+2 &&!cancellato){
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
-               v.setScore(v.getScore()+10);
+               v.setScore(v.getScore()+scoreIncrement);
                }
                b.setDy(-b.getDy());
                cancellato=true;
                break;
              }
              //DOWN
-           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+22>=16+(j*64)&& b.getX() <=16+(j*64)+64 && b.getY()<=64+(i*32)+32 && b.getY()+22>=64+i*32-2 &&!cancellato){
+           if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getX()+ballDim>=border+(j*blockW)&& b.getX() <=border+(j*blockW)+blockW && b.getY()<=blockW+(i*blockH)+blockH && b.getY()+ballDim>=blockW+i*blockH-2 &&!cancellato){
             if((livelli.at(lvl))[i][j].getColor()!=5){
               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
               livesSum[lvl]-=1;
-              v.setScore(v.getScore()+10);
+              v.setScore(v.getScore()+scoreIncrement);
               }
              b.setDy(-b.getDy());
              cancellato=true;
@@ -190,24 +187,27 @@ GestoreGioco::GestoreGioco()
         al_destroy_bitmap(enemies[i]);
       }
     }
-    
+
     void GestoreGioco::enemyMove(Enemy* &en,int lvl){
         al_draw_bitmap(enemies.at(lvl%2),en->getX(),en->getY(),0);
         // al_flip_display();
 
-        if(en->getX() <= 0 || en->getX() >=800 - 69){
+        if(en->getX() <= 0 || en->getX() >=screenW - enemyW){
           en->setDx(-en->getDx());
         }
         if(en->getY() <= 0){
             en->setDy(-en->getDy());
           }
-          if(en->getY()+104 >= 500){
+          if(en->getY()+scoreIncrement4 >= 500){
               en->setDy(-en->getDy());
             }
 
-        if(b.getX()<=en->getX()+69 && b.getX()+22>=en->getX() && b.getY()+22>=en->getY() && b.getY()<=en->getY()+69){
+        if(b.getX()<=en->getX()+enemyW && b.getX()+ballDim>=en->getX() && b.getY()+ballDim>=en->getY() && b.getY()<=en->getY()+enemyW){
           b.setDx(rand() % 6+1);
           b.setDy(rand() % 6+1);
           en->setAlive(false);
         }
+    }
+    GestoreGioco::GestoreGioco(const GestoreGioco& g){
+
     }
