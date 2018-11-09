@@ -7,6 +7,7 @@ Vaus::Vaus()
   lives=3;
   x=348;
   y=560;
+  score=0;
 }
 void Vaus::vausReset(){
   x=x_init;

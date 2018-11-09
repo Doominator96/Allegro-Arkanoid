@@ -20,6 +20,7 @@ class GestoreGioco
 {
 	public:
 		GestoreGioco();
+		~GestoreGioco();
 		void draw(int lvl);
 		const int getNumLivelli(){return numLivelli;}
 		 vector<Block**> getLivelli(){return livelli;}
@@ -27,7 +28,7 @@ class GestoreGioco
 		 void movimento(Vaus v);
 		 ALLEGRO_BITMAP* ball;
 		 Ball b;
-		 void collisionControl(Vaus v, int lvl);
+		 void collisionControl(Vaus &v, int lvl);
 		 // vector<int> getLivesSum() const {return livesSum;}
 		 // void setLivesSum(vector<int> _livesSum){livesSum=_livesSum;}
 		 void enemyMove(Enemy* &en,int lvl);

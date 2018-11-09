@@ -130,6 +130,8 @@ const float FPS=60;
   ALLEGRO_BITMAP* gameOver=al_load_bitmap("gameOver.png");
   ALLEGRO_BITMAP* heart=al_load_bitmap("heart.png");
   ALLEGRO_FONT* text =al_load_font("Arka_solid.ttf",100,0);
+  ALLEGRO_FONT* textSmall =al_load_font("Arka_solid.ttf",50,0);
+  ALLEGRO_FONT* roboto=al_load_font("Roboto-Regular.ttf",30,0);
   if (!Sfondo)
   {
     cerr << "No Bitmap" << endl;
@@ -165,6 +167,13 @@ const float FPS=60;
       al_destroy_display(display);
       al_destroy_sample(sample);
       al_destroy_bitmap(Play);
+      al_destroy_bitmap(paddle);
+      al_destroy_bitmap(gameOver);
+      al_destroy_bitmap(heart);
+      al_destroy_font(text);
+      al_destroy_font(textSmall);
+      al_destroy_font(roboto);
+      al_destroy_timer(timer);
 
       return 0;
     }
@@ -184,11 +193,16 @@ while(!done){
   al_wait_for_event(event_queue, &events);
   if(events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
   {
-    al_destroy_bitmap(Sfondo);
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
     al_destroy_sample(sample);
-    al_destroy_bitmap(Play);
+    al_destroy_bitmap(paddle);
+    al_destroy_bitmap(gameOver);
+    al_destroy_bitmap(heart);
+    al_destroy_font(text);
+    al_destroy_font(textSmall);
+    al_destroy_font(roboto);
+    al_destroy_timer(timer);
 
     return 0;
   }
@@ -210,6 +224,10 @@ while(!done){
       for(int i=0;i<v.getLives();i++){
         al_draw_bitmap(heart,50+(i*35),25,0);
       }
+      string punteggio=to_string(v.getScore());
+      char const * pChar=punteggio.c_str();
+      al_draw_text(roboto,al_map_rgb(150,150,150),700,30,0,pChar);
+      al_draw_text(roboto,al_map_rgb(150,150,150),600,30,0,"Score");
       for(int i=0;i<enemies.size();i++){
       if(enemies[i]->getAlive()){
         ark.enemyMove(enemies[i],lvl);
@@ -227,14 +245,24 @@ while(!done){
         if(v.getLives()==1){
           // gameOver();
           al_draw_bitmap(gameOver,0,0,0);
+          al_draw_text(textSmall,al_map_rgb(255,255,255),50,400,0,"Punteggio Totalizzato");
+          al_draw_text(roboto,al_map_rgb(255,255,255),400,500,0,pChar);
           al_flip_display();
 
-          al_rest(5);
+          al_rest(2);
 
-          al_destroy_display(display);
           al_destroy_event_queue(event_queue);
+          al_destroy_display(display);
           al_destroy_sample(sample);
+          al_destroy_bitmap(paddle);
+          al_destroy_bitmap(gameOver);
+          al_destroy_bitmap(heart);
+          al_destroy_font(text);
+          al_destroy_font(textSmall);
+          al_destroy_font(roboto);
           al_destroy_timer(timer);
+
+          return 0;
 
         }
         v.setLives(v.getLives()-1);
@@ -248,14 +276,24 @@ while(!done){
         if(lvl==ark.getNumLivelli()){
           // gameOver();
           al_draw_bitmap(gameOver,0,0,0);
+          al_draw_text(textSmall,al_map_rgb(255,255,255),50,400,0,"Punteggio Totalizzato");
+          al_draw_text(roboto,al_map_rgb(255,255,255),400,500,0,pChar);
           al_flip_display();
 
-          al_rest(5);
+          al_rest(2);
 
-          al_destroy_display(display);
           al_destroy_event_queue(event_queue);
+          al_destroy_display(display);
           al_destroy_sample(sample);
+          al_destroy_bitmap(paddle);
+          al_destroy_bitmap(gameOver);
+          al_destroy_bitmap(heart);
+          al_destroy_font(text);
+          al_destroy_font(textSmall);
+          al_destroy_font(roboto);
           al_destroy_timer(timer);
+
+          return 0;
         }
 
         // ark.setLivesSum(0);
@@ -269,19 +307,9 @@ while(!done){
 
       }
 
-      }
+    }//timer
 
 
-}
-
-    al_rest(3);
-
-
-  al_destroy_display(display);
-  al_destroy_event_queue(event_queue);
-  al_destroy_sample(sample);
-  al_destroy_timer(timer);
-
-
+}//while
   return 0;
 }

@@ -13,6 +13,8 @@ public:
   int getLives() const {return lives;}
   void setLives(int _lives) {lives=_lives;}
 
+  int getScore() const{return score;}
+  void setScore(int _score){score=_score;} 
   void vausReset();
 private:
   int x_init;
@@ -20,5 +22,6 @@ private:
   int x;
   int y;
   int lives;
+  int score;
 };
 #endif

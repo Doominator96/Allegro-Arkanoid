@@ -81,7 +81,7 @@ GestoreGioco::GestoreGioco()
     }
 
 
-    void GestoreGioco::collisionControl(Vaus v,int lvl){
+    void GestoreGioco::collisionControl(Vaus &v,int lvl){
       cancellato=false;
       completato=false;
         if(b.getX() <= 0 || b.getX() >=800 - 22){
@@ -119,10 +119,12 @@ GestoreGioco::GestoreGioco()
            //    break;
            // }
 
+           //RIGHT
            if((livelli.at(lvl)[i][j].getLives()!=0 || livelli.at(lvl)[i][j].getColor()==5) && b.getY()+22>=64+i*32 && b.getY() <=64+(i*32)+32 && b.getX()<=16+(j*64)+64 && b.getX()>=16+(j*64)+64-2  &&!cancellato){
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
+               v.setScore(v.getScore()+10);
              }
              b.setDx(-b.getDx());
              cancellato=true;
@@ -134,6 +136,7 @@ GestoreGioco::GestoreGioco()
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
+               v.setScore(v.getScore()+10);
              }
              b.setDx(-b.getDx());
              cancellato=true;
@@ -144,6 +147,7 @@ GestoreGioco::GestoreGioco()
              if((livelli.at(lvl))[i][j].getColor()!=5){
                (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
                livesSum[lvl]-=1;
+               v.setScore(v.getScore()+10);
                }
                b.setDy(-b.getDy());
                cancellato=true;
@@ -154,20 +158,20 @@ GestoreGioco::GestoreGioco()
             if((livelli.at(lvl))[i][j].getColor()!=5){
               (livelli.at(lvl))[i][j].setLives((livelli.at(lvl)[i][j].getLives())-1);
               livesSum[lvl]-=1;
+              v.setScore(v.getScore()+10);
               }
              b.setDy(-b.getDy());
              cancellato=true;
              break;
            }
 
-           //RIGHT
 
                }
              }
        if(livesSum[lvl]==0)
        completato=true;
 
-       cout<<livesSum[lvl]<<endl;
+       cout<<v.getScore()<<endl;
        // cout<<cancellato<<endl;
        // for(int i=0;i<8;i++){
        //   for(int j=0;j<12;j++){
@@ -176,6 +180,17 @@ GestoreGioco::GestoreGioco()
        // }
 
     }
+    GestoreGioco::~GestoreGioco(){
+      al_destroy_bitmap(paddle);
+      al_destroy_bitmap(bg);
+      for(int i=0;i<5;i++){
+        al_destroy_bitmap(blocks[i]);
+      }
+      for(int i=0;i<2;i++){
+        al_destroy_bitmap(enemies[i]);
+      }
+    }
+    
     void GestoreGioco::enemyMove(Enemy* &en,int lvl){
         al_draw_bitmap(enemies.at(lvl%2),en->getX(),en->getY(),0);
         // al_flip_display();
