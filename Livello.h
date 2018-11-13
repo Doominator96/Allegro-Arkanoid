@@ -2,10 +2,11 @@
 #define LIVELLO_H
 
 #include "Block.h"
+#include "Variables.h"
 
 using namespace std;
 
-class Livello
+class Livello : public Variables
 {
 public:
   Livello();
@@ -15,7 +16,5 @@ public:
   Block** creaLivello(int[8][12]);
 private:
   Block** livello;
-  int mHeight;
-  int mWidth;
 };
 #endif

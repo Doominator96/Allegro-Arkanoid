@@ -17,5 +17,6 @@ protected:
   int paddleW;
   int scoreIncrement;
   int ballDim;
+  int enemyW;
 };
 #endif
