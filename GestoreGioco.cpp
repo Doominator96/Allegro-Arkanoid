@@ -76,7 +76,7 @@ GestoreGioco::GestoreGioco()
       for(int i=0;i<mHeight;i++){
         for(int j=0;j<mWidth;j++){
           if((livelli.at(lvl))[i][j].getLives()>0 ||(livelli.at(lvl))[i][j].getColor()==5)
-            al_draw_bitmap(blocks.at((livelli.at(lvl))[i][j].getColor()-1),border+(j*blockW),blockW+i*blockH,0);//border 12
+            al_draw_bitmap(blocks.at((livelli.at(lvl))[i][j].getColor()-1),12+(j*blockW),blockW+i*blockH,0);//border 12
         }
       }
     }
@@ -167,9 +167,10 @@ GestoreGioco::GestoreGioco()
     GestoreGioco::~GestoreGioco(){
       al_destroy_bitmap(paddle);
       al_destroy_bitmap(bg);
+      al_destroy_bitmap(ball);
       al_destroy_sample(bounce);
       al_destroy_sample(enemyDeath);
-      al_destroy_mixer(am);
+      // al_destroy_mixer(am);
       al_destroy_sample_instance(sampleInstance);
       for(int i=0;i<5;i++){
         al_destroy_bitmap(blocks[i]);

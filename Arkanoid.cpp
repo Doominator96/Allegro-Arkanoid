@@ -199,6 +199,9 @@ while(!done){
     al_destroy_sample(enemySpawnSound);
     al_destroy_sample(destroyed);
 
+    for(int i=0;i<enemies.size();i++)
+        delete enemies[i];
+
     return 0;
   }
   if(events.type == ALLEGRO_EVENT_TIMER)
@@ -238,7 +241,7 @@ while(!done){
       al_flip_display();
 
       if(ark.b.getY()>=600){
-        cout<<"morto"<<endl;
+        // cout<<"morto"<<endl;
         ark.playSound(destroyed);
         if(v.getLives()==1){
           // gameOver();
@@ -269,8 +272,9 @@ while(!done){
           al_destroy_sample(enemySpawnSound);
           al_destroy_sample(destroyed);
 
-          for(int i=0;i<enemies.size();i++)
-              delete enemies[i];
+           for(int i=0;i<enemies.size();i++)
+               delete enemies[i];
+
 
           return 0;
 
@@ -312,13 +316,13 @@ while(!done){
           al_destroy_sample(enemySpawnSound);
           al_destroy_sample(destroyed);
 
-          for(int i=0;i<enemies.size();i++)
-              delete enemies[i];
+            for(int i=0;i<enemies.size();i++)
+                delete enemies[i];
 
           return 0;
         }
 
-        cout<<"livelloCompletato!"<<endl;
+        // cout<<"livelloCompletato!"<<endl;
         al_clear_to_color(al_map_rgb(0,0,0));
         lvl++;
         ark.b.ballReset();
